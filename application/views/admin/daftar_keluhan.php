@@ -10,7 +10,7 @@
 <!-- DataTales Example -->
 <div class="card shadow mb-4">
     <div class="card-header py-3">
-        <h6 class="m-0 font-weight-bold text-primary">Daftar Keluhan</h6>
+        <h6 class="m-0 font-weight-bold text-primary">Daftar Pengaduan</h6>
     </div>
     <div class="card-body">
         <?php 
@@ -42,6 +42,16 @@
                             <td><?= $value->keluhan_pelanggan ?></td>
                             <?php if($value->status == 'PENDING'){ ?>
                                 <td>
+                                    <span class="badge badge-pill badge-warning"><?= $value->status ?></span>
+                                </td>
+                                <!-- <td>
+                                    <a class="btn badge-pill badge-danger" 
+                                        href="<?php echo base_url();?>admin/update_status_keluhan?sid=<?php echo $value->id;?>&sval=<?php echo $value->status;?>">
+                                            <?= $value->status ?>
+                                    </a>
+                                </td> -->
+                            <?php } elseif($value->status == 'DITOLAK') { ?>
+                                <td>
                                     <span class="badge badge-pill badge-danger"><?= $value->status ?></span>
                                 </td>
                                 <!-- <td>
@@ -69,7 +79,7 @@
                                         <i class="fas fa-eye"></i>
                                 </a>
                                 <a href="<?= base_url('admin/edit_approval_keluhan/'.$value->id)?>" class="btn btn-warning btn-circle">
-                                    <i class="fas fa-hand-paper"></i>
+                                    <i class="fas fa-pen"></i>
                                 </a>
                                 <a onclick="javascript: return confirm('Anda yakin menghapus keluhan ?')"
                                     href="<?= base_url('admin/hapus_keluhan/'.$value->id)?>" 
@@ -121,6 +131,22 @@
                         <tr>
                             <th>Bukti Keluhan</th>
                             <td><img src="<?php echo base_url()?>assets/bukti_keluhan/<?php echo $value->bukti_keluhan ?>" width="200px"></td>
+                        </tr>
+                        <tr>
+                            <th>Nama Approval</th>
+                            <td><?= $value->nama_approval ?></td>
+                        </tr>
+                        <tr>
+                            <th>Tanggal Approval</th>
+                            <td><?= $value->tanggal_approval ?></td>
+                        </tr>
+                        <tr>
+                            <th>Bukti Approval</th>
+                            <?php if($value->bukti_approval == '-') { ?>
+                                <td><?= $value->bukti_approval ?></td>
+                            <?php } else { ?>
+                                <td><img src="<?php echo base_url()?>assets/bukti_approval/<?php echo $value->bukti_approval ?>" width="200px"></td>
+                            <?php } ?>
                         </tr>
                     </tbody>
                 </table>

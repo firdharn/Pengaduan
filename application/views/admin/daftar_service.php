@@ -45,13 +45,8 @@
                             <td><?= $value->title ?></td>
                             <td><?= $value->caption ?></td>
                             <td>
-                                <a class="btn btn-primary btn-circle" 
-                                    data-toggle="modal" 
-                                    data-target="#modal-detail<?php echo $value->id; ?>">
-                                        <i class="fas fa-eye"></i>
-                                </a>
                                 <a href="<?= base_url('admin/edit_service/'.$value->id)?>" class="btn btn-warning btn-circle">
-                                    <i class="fas fa-hand-paper"></i>
+                                    <i class="fas fa-pen"></i>
                                 </a>
                                 <a onclick="javascript: return confirm('Anda yakin menghapus data our team ?')"
                                     href="<?= base_url('admin/hapus_service/'.$value->id)?>" 

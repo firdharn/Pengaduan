@@ -59,8 +59,8 @@
                         <form id="login-form" class="form" action="<?php echo base_url('act/login_process'); ?>" method="post">
                             <h3 class="text-center text-info">Login</h3>
                             <div class="form-group">
-                                <label for="username" class="text-info">Username:</label><br>
-                                <input type="text" name="username" id="username" class="form-control" required=>
+                                <label for="username" class="text-info">Email:</label><br>
+                                <input type="text" name="email" id="email" class="form-control" required=>
                             </div>
                             <div class="form-group">
                                 <label for="password" class="text-info">Password:</label><br>
@@ -72,6 +72,8 @@
                             <br>
                             <div id="register-link" class="text-right">
                                 <span>Belum punya akun ?</span>&nbsp;<a href="<?= base_url('act/register') ?>" class="text-info">Daftar disini</a>
+                                </br>
+                                <a href="<?= base_url('act/lupa_password') ?>" class="text-info">Lupa Password ?</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                             </div>                            
                         </form>
                     </div>

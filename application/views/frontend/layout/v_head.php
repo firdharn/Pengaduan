@@ -9,6 +9,7 @@
     <meta name="author" content="">
 
     <title>Company Profile - PLN Kepanjen</title>
+    <data-bg="<?php echo base_url('assets/polinema.png')?>">
 
     <!-- Bootstrap core CSS -->
     <link href="<?php echo base_url()?>template_frontend/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">

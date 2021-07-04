@@ -6,6 +6,7 @@
                 <div class="container my-auto">
                     <div class="copyright text-center my-auto">
                         <span>Copyright &copy; Web Pengaduan 2021</span>
+                        <data-bg="<?php echo base_url('assets/about/polinema.png')?>">
                     </div>
                 </div>
             </footer>
@@ -71,6 +72,9 @@
     <script src="<?php echo base_url()?>template_admin/js/demo/chart-area-demo.js"></script>
     <script src="<?php echo base_url()?>template_admin/js/demo/chart-pie-demo.js"></script>
     <script src="<?php echo base_url()?>template_admin/js/demo/chart-bar-demo.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
 
     <!-- chart visitor section -->
     <script type="text/javascript">
@@ -78,7 +82,8 @@
         var chart = new Chart(ctx, {
         type: 'bar',
         data: {
-            labels: ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"],
+            //labels: ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"],
+            labels: ["Desember", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November"],
             datasets: [{
                     label: "Keluhan Selesai",
                     data: [
@@ -97,6 +102,23 @@
 
                     ],
                     backgroundColor: 'rgba(0, 188, 212, 0.8)'
+                }, {
+                    label: "Keluhan Ditolak",
+                    data: [
+                        <?php if($tittle == 'dashboard')
+                        {
+                            $data = ["0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0",];
+                            foreach ($dummy_keluhan_ditolak as $key => $value)
+                            {
+                                $data[$value->bulan] = $value->jumlah;
+                            }
+                            foreach ($data as $key => $value) {
+                                echo "\""."$value"."\",";
+                            }
+                        }
+                        ?>
+                    ],
+                    backgroundColor: 'rgba(255, 161, 0, 1)'
                 }, {
                     label: "Keluhan Pending",
                     data: [
@@ -128,12 +150,34 @@
     <!-- note : tambahan js -->
     <script type="text/javascript" src="<?php echo base_url()?>template_admin/vendor/clockpicker/dist/bootstrap-clockpicker.min.js"></script>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js" integrity="sha512-T/tUfKSV1bihCnd+MxKD0Hm1uBBroVYBOYSk1knyvQ9VyZJpc/ALb4P0r6ubwVPSGB2GvjeoMAJJImBG12TiaQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
     <!--  note : tambahan js  -->
     <script type="text/javascript">
         $('#waktu_approval').clockpicker({
             donetext: 'Terapkan',
             placement: 'top'
         });
+    </script>
+
+    <script type="text/javascript">
+        $('#periode').daterangepicker();
+        $('#datepicker').datepicker({ 
+            startDate: new Date()
+        });
+    </script>
+    
+    <script>
+        function search_keluhan_by_date() 
+        {
+            let search_keluhan_by_date = document.getElementById("periode").value;
+            window.location.href = '<?php echo base_url();?>admin/report_keluhan?search_keluhan_by_date='+search_keluhan_by_date;
+        }
+        function search_kritik_by_date() 
+        {
+            let search_kritik_by_date = document.getElementById("periode").value;
+            window.location.href = '<?php echo base_url();?>admin/report_kritik_saran?search_kritik_by_date='+search_kritik_by_date;
+        }
     </script>
 
 </body>

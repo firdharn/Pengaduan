@@ -11,15 +11,14 @@ class M_berita extends CI_Model
 			$this->load->model('m_kategori_berita');
 			if (isset($_REQUEST['kategori'])) {
 				$kategori = $_REQUEST['kategori'];
-				$data = $this->m_kategori_berita->get_detail_nama_kategori_berita($kategori, "none");
+				$data = $this->m_kategori_berita->get_detail_nama_kategori_berita($kategori);
+				foreach ($data as $key => $value) {
+					$this->db->or_where('id_kategori', $value->id);
+				}
 			} else if (isset($_REQUEST['search'])) {
-				$search_kategori = $_REQUEST['search'];
-				$data = $this->m_kategori_berita->get_detail_nama_kategori_berita($search_kategori, "both");
-			}			
-			foreach ($data as $key => $value) {
-				$this->db->or_where('id_kategori', $value->id);
+				$search_by_judul = $_REQUEST['search'];
+				$this->db->like('judul', $search_by_judul);
 			}
-			
 		}
 		$this->db->select('*');
         $this->db->from('berita');		
@@ -42,6 +41,7 @@ class M_berita extends CI_Model
     //mengambil data dari kategori berita dan berita yang di-JOIN-kan
 	public function get_berita()
 	{
+		$this->update_berita_status_draft();
 		$this->db->select('b.id, kb.nama_kategori, b.judul, DATE_FORMAT(b.tanggal_publish, \'%d-%m-%Y\') as tanggal_publish, b.status_publish');
 		$this->db->from('kategori_berita kb');
 		$this->db->join('berita b', 'kb.id = b.id_kategori');
@@ -56,6 +56,7 @@ class M_berita extends CI_Model
 	//mengambil 3 data berita terbaru
 	public function get_berita_terbaru()
 	{
+		$this->update_berita_status_draft();
         $this->db->select('*');
         $this->db->from('berita');
 		$this->db->where('status_publish', 'POST');
@@ -68,18 +69,19 @@ class M_berita extends CI_Model
 	//mengambil 3 data berita berdasarkan page
 	public function get_berita_page()
 	{
+		$this->update_berita_status_draft();
 		if(isset($_REQUEST['kategori']) || isset($_REQUEST['search'])){
 			$this->load->model('m_kategori_berita');
 			if (isset($_REQUEST['kategori'])) {
 				$kategori = $_REQUEST['kategori'];
-				$data = $this->m_kategori_berita->get_detail_nama_kategori_berita($kategori, "none");
+				$data = $this->m_kategori_berita->get_detail_nama_kategori_berita($kategori);
+				foreach ($data as $key => $value) {
+					$this->db->or_where('id_kategori', $value->id);
+				}
 			} else if (isset($_REQUEST['search'])) {
-				$search_kategori = $_REQUEST['search'];
-				$data = $this->m_kategori_berita->get_detail_nama_kategori_berita($search_kategori, "both");
-			} 
-			foreach ($data as $key => $value) {
-				$this->db->or_where('id_kategori', $value->id);
-			}
+				$search_by_judul = $_REQUEST['search'];
+				$this->db->like('judul', $search_by_judul);
+			} 			
 		}
         $this->db->select('*, DATE_FORMAT(tanggal_publish, \'%M %e, %Y\') as tanggal');
         $this->db->from('berita');		
@@ -130,6 +132,14 @@ class M_berita extends CI_Model
         $this->db->where('id', $id);
         $this->db->update('berita', $data);
 	}  
+
+	public function update_berita_status_draft()
+	{
+		$this->db->set('status_publish', 'Post');
+		$this->db->where('status_publish', 'Draft');
+		$this->db->where('tanggal_publish <=', 'NOW()', FALSE);
+        $this->db->update('berita');
+	}
 
 	//menghapus data berita tertentu
 	public function delete_berita($id)

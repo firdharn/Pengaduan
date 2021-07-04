@@ -27,6 +27,7 @@
                         <th>No</th>
                         <th>Nama Pelanggan</th>
                         <th>Tanggal</th>
+                        <th>Status Pelanggan</th>
                         <th>Kritik Saran</th>
                         <th>Aksi</th>
                     </tr>
@@ -38,12 +39,15 @@
                             <td><?= $no++ ?></td>
                             <td><?= $value->nama ?></td>
                             <td><?= $value->tanggal ?></td>
+                            <td><?php
+                                if($value->Status == 0)
+                                echo 'Guest';
+                                else
+                                echo 'Pelanggan';
+                            ?></td>
                             <td><?= $value->kritik_saran ?></td>
                             <td>
-                                <a class="btn btn-primary btn-circle" 
-                                    data-toggle="modal" data-target="#modal-detail<?php echo $value->id; ?>">
-                                    <i class="fas fa-eye"></i>
-                                </a>
+                        
                                 <a onclick="javascript: return confirm('Anda yakin menghapus kritik&saran ?')"
                                     href="<?= base_url('admin/hapus_kritik_saran/'.$value->id)?>" 
                                     class="btn btn-danger btn-circle">
@@ -67,7 +71,7 @@
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalCenterTitle">Detail Keluhan</h5>
+                <h5 class="modal-title" id="exampleModalCenterTitle">Detail Kritik Dan Saran</h5>
                 <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">×</span>
                 </button>

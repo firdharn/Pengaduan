@@ -56,11 +56,11 @@ class M_kategori_berita extends CI_Model
 	}
 
     //mengambil detail data kategori berita tertentu berdasarkan nama kategori
-	public function get_detail_nama_kategori_berita($nama_kategori, $type)
+	public function get_detail_nama_kategori_berita($nama_kategori)
 	{
         $this->db->select('id, nama_kategori');
         $this->db->from('kategori_berita');
-        $this->db->like('nama_kategori', $nama_kategori);
+        $this->db->where('nama_kategori', $nama_kategori);
         return $this->db->get()->result();
 	}
 

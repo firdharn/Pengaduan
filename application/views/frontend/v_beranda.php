@@ -3,13 +3,13 @@
     <br>
         <!-- Features Section -->
         <div class="row">
-        <div class="col-lg-6">
+        <div class="col-lg-6" align="justify">
             <h2><?php echo $about->about_title ?></h2>
             
             <p><?php echo $about->about_desc ?></p>
         </div>
         <div class="col-lg-6">
-            <img class="img-fluid rounded float-right" src="<?php echo base_url()?>template_frontend/images/banner.jpg" alt="" width="400">
+            <img class="img-fluid rounded float-right" src="<?php echo base_url()?>assets/about/<?php echo $about->about_image ?>" alt="" width="400">
         </div>
         </div>
         <!-- /.row -->
@@ -22,7 +22,9 @@
         <?php $no=1; foreach ($service as $key => $value) { ?>
         <div class="col-lg-4 mb-4">
             <div class="card h-100 text-center">
+            <a href="https://layanan.pln.co.id/">
             <img class="card-img-top" src="<?php echo base_url()?>assets/service/<?php echo $value->service_image ?>" alt="" height="200px">
+             </a>
             <div class="card-body">
                 <h4 class="card-title"><?= $value->title ?></h4>
                 <p class="card-text"><?= $value->caption ?></p>
@@ -39,8 +41,8 @@
 
     <section class="jumbotron text-center" style="background-image: url(images/jumbotron.jpg);">
         <div class="container">
-        <h1 class="jumbotron-heading" style="color: white">Customer Service</h1>
-        <p class="lead" style="color: white">Something short and leading about the collection below—its contents, the creator, etc. Make it short and sweet, but not too short so folks don’t simply skip over it entirely.</p>
+        <h1 class="jumbotron-heading" style="color: black">Customer Service</h1>
+        <p class="lead" style="color: white"></p>
         <p>
             <a href="<?= base_url('act/pengaduan')?>" class="btn btn-primary my-2">Pengaduan Pelanggan</a>
             <a href="<?= base_url('act/kritik_saran')?>" class="btn btn-secondary my-2">Kritik & Saran</a>
@@ -49,7 +51,7 @@
     </section>
 
 <div class="container">
-    <center><h2>Grafik Keluhan</h2></center>
+    <center><h2>Grafik Pengaduan</h2></center>
      <!-- Content Row -->
         <div class="row">
 
@@ -58,7 +60,7 @@
                 <!-- Bar Chart -->
                 <div class="card shadow mb-4">
                     <div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold text-primary">Keluhan</h6>
+                        <h6 class="m-0 font-weight-bold text-primary">Pengaduan</h6>
                     </div>
                     <div class="card-body">
                         <div class="chart-bar">
@@ -100,6 +102,8 @@
 <footer class="py-3 bg-dark">
 <div class="container">
     <p class="m-0 text-center text-white">Copyright &copy; PLN Kepanjen 2021</p>
+          
+    
 </div>
 <!-- /.container -->
 </footer>
@@ -123,9 +127,10 @@
         var chart = new Chart(ctx, {
         type: 'bar',
         data: {
-            labels: ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"],
+            // labels: ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"],
+            labels: ["Desember", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November"],
             datasets: [{
-                    label: "Keluhan Selesai",
+                    label: "Pengaduan Selesai",
                     data: [
                     <?php if($tittle == 'beranda')
                         {
@@ -143,7 +148,24 @@
                     ],
                     backgroundColor: 'rgba(0, 188, 212, 0.8)'
                 }, {
-                    label: "Keluhan Pending",
+                    label: "Keluhan Ditolak",
+                    data: [
+                        <?php if($tittle == 'beranda')
+                        {
+                            $data = ["0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0",];
+                            foreach ($dummy_keluhan_ditolak as $key => $value)
+                            {
+                                $data[$value->bulan] = $value->jumlah;
+                            }
+                            foreach ($data as $key => $value) {
+                                echo "\""."$value"."\",";
+                            }
+                        }
+                        ?>
+                    ],
+                    backgroundColor: 'rgba(255, 161, 0, 1)'
+                }, {
+                    label: "Pengaduan Pending",
                     data: [
                         <?php if($tittle == 'beranda')
                         {

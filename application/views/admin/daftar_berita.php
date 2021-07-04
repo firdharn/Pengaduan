@@ -51,7 +51,7 @@
                             <td><?= $value->status_publish ?></td>
                             <td>
                                 <a href="<?= base_url('admin/edit_berita/'.$value->id)?>" class="btn btn-warning btn-circle">
-                                    <i class="fas fa-hand-paper"></i>
+                                    <i class="fas fa-pen"></i>
                                 </a>
                                 <a onclick="javascript: return confirm('Anda yakin menghapus berita ?')" 
                                     href="<?= base_url('admin/hapus_berita/'.$value->id)?>" 

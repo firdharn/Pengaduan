@@ -37,6 +37,7 @@
   <footer class="py-3 bg-dark">
     <div class="container">
       <p class="m-0 text-center text-white">Copyright &copy; PLN Kepanjen 2020</p>
+      <data-bg="<?php echo base_url('assets/about/polinema.png')?>">
     </div>
     <!-- /.container -->
   </footer>

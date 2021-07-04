@@ -47,7 +47,7 @@
                             <td><?= $value->caption ?></td>
                             <td>
                                 <a href="<?= base_url('admin/edit_galeri/'.$value->id)?>" class="btn btn-warning btn-circle">
-                                    <i class="fas fa-hand-paper"></i>
+                                    <i class="fas fa-pen"></i>
                                 </a>
                                 <a onclick="javascript: return confirm('Anda yakin menghapus galeri ?')"
                                     href="<?= base_url('admin/hapus_galeri/'.$value->id)?>" 

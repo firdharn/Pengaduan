@@ -48,7 +48,14 @@
             <li <?=$tittle == 'daftar_keluhan' ? 'class="nav-item active"':'class="nav-item"'?> >
                 <a class="nav-link" href="<?= base_url('admin/daftar_keluhan')?>">
                     <i class="fas fa-fw fa-sticky-note"></i>
-                    <span>Data Keluhan</span></a>
+                    <span>Data Pengaduan</span></a>
+            </li>
+
+             <!-- Nav Item - Charts -->
+            <li <?=$tittle == 'report_keluhan' ? 'class="nav-item active"':'class="nav-item"'?> >
+                <a class="nav-link" href="<?= base_url('admin/report_keluhan')?>">
+                    <i class="fas fa-fw fa-file"></i>
+                    <span>Report Pengaduan</span></a>
             </li>
 
             <!-- Nav Item - Tables -->
@@ -56,6 +63,13 @@
                 <a class="nav-link" href="<?= base_url('admin/daftar_kritik_saran')?>">
                     <i class="fas fa-fw fa-comments"></i>
                     <span>Data Kritik & Saran</span></a>
+            </li>
+
+            <!-- Nav Item - Tables -->
+            <li <?=$tittle == 'report_kritik_saran' ? 'class="nav-item active"':'class="nav-item"'?>>
+                <a class="nav-link" href="<?= base_url('admin/report_kritik_saran')?>">
+                    <i class="fas fa-fw fa-file"></i>
+                    <span>Report Kritik & Saran</span></a>
             </li>
 
             <!-- Heading -->

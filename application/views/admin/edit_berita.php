@@ -14,6 +14,7 @@
     </div>
     <div class="card-body">
         <?php
+          date_default_timezone_set("Asia/Bangkok");
           echo form_open_multipart('admin/edit_berita/'.$dummy_detail->id);
         ?>
           <div class="form-group">
@@ -54,6 +55,7 @@
           <div class="form-group">
             <label for="exampleInputPassword1">Tanggal Publish</label>
             <input type="date" 
+              min="<?php echo date("Y-m-d"); ?>" 
               class="form-control" 
               value="<?= substr($dummy_detail->tanggal_publish, 0, 10) ?>"
               name="tanggal_publish" required>

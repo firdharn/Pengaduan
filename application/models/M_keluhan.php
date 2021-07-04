@@ -13,7 +13,9 @@ class M_keluhan extends CI_Model
     //mengambil data keluhan
     public function get_keluhan()
 	{
-        $this->db->select('k.id, p.nama, DATE_FORMAT(k.tanggal, \'%d-%m-%Y\') as tanggal, k.keluhan_pelanggan, k.status, k.bukti_keluhan');
+        $this->db->select('k.id, p.nama, DATE_FORMAT(k.tanggal, \'%d-%m-%Y\') as tanggal, 
+			k.keluhan_pelanggan, k.status, k.bukti_keluhan, k.nama_approval,
+			DATE_FORMAT(k.tanggal_approval, \'%d-%m-%Y\') as tanggal_approval, k.bukti_approval');
 		$this->db->from('pelanggan p');
 		$this->db->join('keluhan k', 'p.id = k.id_pelanggan');
 		$this->db->order_by('k.created_at', 'DESC');
@@ -21,6 +23,24 @@ class M_keluhan extends CI_Model
 		$this->db->order_by('p.nama','ASC');
 		$this->db->order_by('k.status','ASC');
 		$this->db->order_by('k.keluhan_pelanggan','ASC');
+		return $this->db->get()->result();
+	}
+
+	//mengambil data keluhan berdasarkan periode
+    public function get_keluhan_by_periode($date1, $date2)
+	{
+        $this->db->select('k.id, p.nama, DATE_FORMAT(k.tanggal, \'%d-%m-%Y\') as tanggal, 
+			k.keluhan_pelanggan, k.status, k.bukti_keluhan, k.nama_approval,
+			DATE_FORMAT(k.tanggal_approval, \'%d-%m-%Y\') as tanggal_approval, k.bukti_approval');
+		$this->db->from('pelanggan p');
+		$this->db->join('keluhan k', 'p.id = k.id_pelanggan');
+		$this->db->where('k.tanggal >=', 'DATE(\''.$date1.'\')', FALSE);
+		$this->db->where('k.tanggal <=', 'DATE(\''.$date2.'\')', FALSE);
+		$this->db->order_by('k.created_at', 'DESC');
+		$this->db->order_by('tanggal','ASC');
+		$this->db->order_by('p.nama','ASC');
+		$this->db->order_by('k.status','ASC');
+		$this->db->order_by('k.keluhan_pelanggan','ASC');		
 		return $this->db->get()->result();
 	}
 
@@ -80,6 +100,17 @@ class M_keluhan extends CI_Model
 		$this->db->select('COUNT(id) as jumlah, DATE_FORMAT(tanggal, "%c") as bulan');
         $this->db->from('keluhan');
 		$this->db->where('status', 'SELESAI');
+        $this->db->where('DATE_FORMAT(tanggal, "%Y") =', ' DATE_FORMAT(NOW(), "%Y")', FALSE);
+        $this->db->group_by('DATE_FORMAT(tanggal, "%c-%Y")');
+        return $this->db->get()->result();
+    }
+    
+    //membaca data keluhan per bulan where 'DITOLAK'
+    public function read_ditolak_per_month()
+    {
+		$this->db->select('COUNT(id) as jumlah, DATE_FORMAT(tanggal, "%c") as bulan');
+        $this->db->from('keluhan');
+		$this->db->where('status', 'DITOLAK');
         $this->db->where('DATE_FORMAT(tanggal, "%Y") =', ' DATE_FORMAT(NOW(), "%Y")', FALSE);
         $this->db->group_by('DATE_FORMAT(tanggal, "%c-%Y")');
         return $this->db->get()->result();

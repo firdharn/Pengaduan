@@ -14,6 +14,7 @@
     </div>
     <div class="card-body">
       <?php
+        date_default_timezone_set("Asia/Bangkok");
         echo form_open_multipart('admin/tambah_berita');
       ?>
         <div class="form-group">
@@ -43,7 +44,7 @@
 
         <div class="form-group">
           <label for="exampleInputPassword1">Tanggal Publish</label>
-          <input type="date" class="form-control" name="tanggal_publish" required>
+          <input type="date" class="form-control" name="tanggal_publish" min="<?php echo date("Y-m-d"); ?>" required>
         </div>
 
         <div class="form-group">
@@ -62,3 +63,5 @@
 
 </div>
 <!-- /.container-fluid -->
+
+

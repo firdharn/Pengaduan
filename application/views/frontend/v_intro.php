@@ -13,7 +13,7 @@
 }
 body{
   min-height:100%;
-  background:linear-gradient(0deg, rgba(255, 0, 150, 0.3), rgba(255, 0, 150, 0.3)), url(<?php echo base_url()?>template_frontend/images/bg.png);
+  background:linear-gradient(0deg, rgba(255, 0, 150, 0.3), rgba(255, 0, 150, 0.3)), url(<?php echo base_url()?>assets/bg.PNG);
   background-size:cover;
   background-repeat: no-repeat;
 }
@@ -219,10 +219,55 @@ footer a {
     color:#ff0000;
   }
 }
+
+/*styling navbar*/
+.ul2 {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #5bc0de;
+}
+
+.li2 {
+  float: left;
+}
+
+.li2 a {
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+/*
+.li2 a:hover:not(.active) {
+  background-color: #111;
+}*/
+
+.active2 {
+  background-color: #04AA6D;
+}
+
 /* footer  */
   </style>
 </head>
 <body>
+
+    <ul class="ul2">
+      <?php if(!$this->session->userdata('id_pelanggan_pengaduan')){ ?>
+                   <li class="li2" style="float:right; font-weight: bold;"><a href="<?= base_url('act/login')?>">Login</a></li>
+      <?php } else { ?>
+                    <li class="li2" style="float:right; font-weight: bold;"><a href="<?= base_url('act/logout')?>">Logout</a></li>
+      <?php } ?>
+      <li class="li2"><a href="<?= base_url()?>" style="font-size: 20px;">PLN Kepanjen</a></li>  
+      <li class="li2" style="float:right"><a href="<?= base_url('act/kontak')?>">Kontak</a></li>
+      <li class="li2" style="float:right"><a href="<?= base_url('act/berita')?>">Berita</a></li>
+      <li class="li2" style="float:right"><a href="<?= base_url('act/layanan')?>">Layanan</a></li>
+      <li class="li2" style="float:right"><a href="<?= base_url('act/tentang')?>">Tentang</a></li>
+      <li class="li2" style="float:right"><a href="<?= base_url('act/beranda')?>">Beranda</a></li>
+    </ul>
+
     <div class="wrapper">
         <ui class="mainMenu">
             <li class="item" id="account">

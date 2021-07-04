@@ -75,6 +75,44 @@ body{
 </head>
 
 <body>
+
+    <nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-info fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="<?= base_url()?>">PLN Kepanjen</a>
+            <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarResponsive">
+                <ul class="navbar-nav ml-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="<?= base_url('act/beranda')?>">Beranda</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="<?= base_url('act/tentang')?>">Tentang</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="<?= base_url('act/layanan')?>">Layanan</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="<?= base_url('act/berita')?>">Berita</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="<?= base_url('act/kontak')?>">Kontak</a>
+                </li>
+                <?php if(!$this->session->userdata('id_pelanggan_pengaduan')){ ?>
+                    <li class="nav-item">
+                        <a class="nav-link" href="<?= base_url('act/login')?>"" style="font-weight: bold; color: white">Login</a>
+                    </li>
+                <?php } else { ?>
+                    <li class="nav-item">
+                        <a class="nav-link" href="<?= base_url('act/logout')?>"" style="font-weight: bold; color: white">Logout</a>
+                    </li>
+                <?php } ?>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <br>
 <?php
     if($this->session->flashdata('pesan_kritik_saran')){
         $message = $this->session->flashdata('pesan_kritik_saran');
@@ -88,21 +126,19 @@ body{
             <form method="post">
                 <h3 id="tipe">Form Kritik & Saran</h3>
                 <div class="row">
-                    <div class="col-md-6">
-                    <?php
-                        $nama_pelanggan = "Nama Pelanggan";
-                        if($this->session->userdata('nama_pelanggan_pengaduan')){
-                            $nama_pelanggan = $this->session->userdata('nama_pelanggan_pengaduan');
-                        }
-                    ?>
+                    
+                    <div class="col-md-12">
                         <div class="form-group">
-                            <input type="text" class="form-control" value="<?= $nama_pelanggan ?>" disabled />
-                        </div>
-                        <div class="form-group">
-                            <input type="date" name="tanggal" class="form-control" placeholder="Tanggal" value="" required />
+                            <?php if($this->session->userdata('nama_pelanggan_pengaduan') != null){ ?>
+                            <input type="text" name="nama" class="form-control" placeholder="Nama" 
+                            value=<?php echo $this->session->userdata('nama_pelanggan_pengaduan'); ?> required readonly />
+                            <?php }else{ ?>
+                             <input type="text" name="nama" class="form-control" placeholder="Nama" required />
+                            <?php }?>
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    
+                    <div class="col-md-12">
                         <div class="form-group">
                             <textarea name="form_isian" class="form-control" placeholder="Form Isian" style="width: 100%; height: 100px;"></textarea>
                         </div>
@@ -111,6 +147,17 @@ body{
                         </div>
                     </div>
                 </div>
+                   <div class="col-md-6">
+                    <?php
+                        $nama_pelanggan = "Nama Pelanggan";
+                        if($this->session->userdata('nama_pelanggan_pengaduan')){
+                            $nama_pelanggan = $this->session->userdata('nama_pelanggan_pengaduan');
+                        }
+                    ?>
+                        <div class="form-group">
+                            <input type="hidden" name="tanggal" class="form-control" placeholder="Tanggal" value="<?= date('d-m-Y'); ?>" readonly />
+                        </div>
+                    </div>
             </form>
 </div>
 

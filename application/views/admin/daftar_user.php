@@ -27,7 +27,7 @@
                             <th>No</th>
                             <th>Nama Pelanggan</th>
                             <th>No Telepon</th>
-                            <th>Username</th>
+                            <th>Email</th>
                             <th>Aksi</th>
                         </tr>
                     </thead>
@@ -38,12 +38,12 @@
                                 <td><?= $no++ ?></td>
                                 <td><?= $value->nama ?></td>
                                 <td><?= $value->no_telepon ?></td>
-                                <td><?= $value->username ?></td>
+                                <td><?= $value->email ?></td>
                                 <td>
-                                    <a class="btn btn-primary btn-circle" 
-                                        data-toggle="modal" data-target="#modal-detail<?php echo $value->id; ?>">
-                                        <i class="fas fa-eye"></i>
-                                    </a>
+                                    <!--<a class="btn btn-primary btn-circle" -->
+                                    <!--    data-toggle="modal" data-target="#modal-detail<?php echo $value->id; ?>">-->
+                                    <!--    <i class="fas fa-eye"></i>-->
+                                    <!--</a>-->
                                     <!-- <a href="edit_user.html" class="btn btn-warning btn-circle">
                                         <i class="fas fa-hand-paper"></i>
                                     </a> -->
@@ -88,8 +88,8 @@
                             <td><?= $value->no_telepon ?></td>
                         </tr>
                         <tr>
-                            <th>Username</th>
-                            <td><?= $value->username ?></td>
+                            <th>Email</th>
+                            <td><?= $value->email ?></td>
                         </tr>
                     </tbody>
                 </table>

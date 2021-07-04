@@ -48,6 +48,7 @@ class Admin extends CI_Controller {
 			'dummy_dashboard'		=> $this->m_dashboard->get_count_all_data(),
 			'dummy_keluhan_pending'	=> $this->m_keluhan->read_pending_per_month(),
 			'dummy_keluhan_selesai'	=> $this->m_keluhan->read_selesai_per_month(),
+			'dummy_keluhan_ditolak'	=> $this->m_keluhan->read_ditolak_per_month(),
 			'content' 				=> 'admin/dashboard' 
 		);
 		$this->load->view('admin/layout/v_wrapper', $data, FALSE);
@@ -169,6 +170,16 @@ class Admin extends CI_Controller {
 					$banner = $this->upload->data('file_name');
 				}
 			}
+			
+			date_default_timezone_set("Asia/Bangkok");
+			$tanggal = date('Y-m-d');
+			$status_publish = $this->input->post('status_publish', TRUE);
+			if($this->input->post('status_publish', TRUE) == "Post" && 
+				$this->input->post('tanggal_publish', TRUE) > $tanggal)
+			{
+				$status_publish = "Draft";
+			}
+			
 			$data = array(
 					'id_kategori'		=> $this->input->post('id_kategori', TRUE),
 					'banner'			=> $banner,
@@ -176,7 +187,7 @@ class Admin extends CI_Controller {
 					'slug'				=> slug($this->input->post('judul_berita')),
 					'deskripsi'			=> $this->input->post('editor1'),
 					'tanggal_publish'	=> $this->input->post('tanggal_publish', TRUE),					
-					'status_publish'	=> $this->input->post('status_publish', TRUE)			
+					'status_publish'	=> $status_publish			
 				);
 			$this->m_berita->input_berita($data);
 			$this->session->set_flashdata('pesan', 'Data Berhasil Ditambahkan !!!');
@@ -260,6 +271,16 @@ class Admin extends CI_Controller {
 			);
 			$this->load->view('admin/layout/v_wrapper', $data, FALSE);
 		} else {
+		    
+		    date_default_timezone_set("Asia/Bangkok");
+			$tanggal = date('Y-m-d');
+			$status_publish = $this->input->post('status_publish', TRUE);
+			if($this->input->post('status_publish', TRUE) == "Post" && 
+				$this->input->post('tanggal_publish', TRUE) > $tanggal)
+			{
+				$status_publish = "Draft";
+			}
+		    
 			if($_FILES['banner']['size'] == 0) {
 				$data = array(
 					'id_kategori'		=> $this->input->post('id_kategori', TRUE),
@@ -267,7 +288,7 @@ class Admin extends CI_Controller {
 					'slug'				=> slug($this->input->post('judul_berita')),
 					'deskripsi'			=> $this->input->post('editor1'),
 					'tanggal_publish'	=> $this->input->post('tanggal_publish', TRUE),					
-					'status_publish'	=> $this->input->post('status_publish', TRUE)			
+					'status_publish'	=> $status_publish			
 				);
 			} else {
 				$banner = $_FILES['banner'];
@@ -288,7 +309,7 @@ class Admin extends CI_Controller {
 						'slug'				=> slug($this->input->post('judul_berita',TRUE)),
 						'deskripsi'			=> $this->input->post('editor1', TRUE),
 						'tanggal_publish'	=> $this->input->post('tanggal_publish', TRUE),					
-						'status_publish'	=> $this->input->post('status_publish', TRUE)			
+						'status_publish'	=> $status_publish			
 					);
 			}			
 			$this->m_berita->update_berita($id, $data);
@@ -350,8 +371,8 @@ class Admin extends CI_Controller {
 	//mengupdate data approval kolom keluhan di database
 	public function edit_approval_keluhan($id)
 	{
-		$this->form_validation->set_rules('nama_approval', 'Masukkan Nama Approval', 'required');
-		$this->form_validation->set_rules('waktu_approval', 'Masukkan Waktu Approval', 'required');
+		$this->form_validation->set_rules('nama_approval', 'Nama Approval', 'required');
+		$this->form_validation->set_rules('tanggal_approval', 'Tanggal Approval', 'required');
 		
 		if($this->form_validation->run() == FALSE) {
 			$data = array(
@@ -363,9 +384,9 @@ class Admin extends CI_Controller {
 		} else {	
 			if($_FILES['bukti_approval']['size'] == 0) {
 				$data = array(
-						'status'			=> 'SELESAI',
+						'status'			=> $this->input->post('status', TRUE),
 						'nama_approval'		=> $this->input->post('nama_approval', TRUE),
-						'waktu_approval'	=> $this->input->post('waktu_approval', TRUE)		
+						'tanggal_approval'	=> $this->input->post('tanggal_approval', TRUE)		
 					);
 			} else {
 				$bukti_approval = $_FILES['bukti_approval'];
@@ -381,9 +402,9 @@ class Admin extends CI_Controller {
 					}
 				}
 				$data = array(
-						'status'			=> 'SELESAI',
+						'status'			=> $this->input->post('status', TRUE),
 						'nama_approval'		=> $this->input->post('nama_approval', TRUE),
-						'waktu_approval'	=> $this->input->post('waktu_approval', TRUE),	
+						'tanggal_approval'	=> $this->input->post('tanggal_approval', TRUE),	
 						'bukti_approval'	=> $bukti_approval		
 					);
 			}			
@@ -599,6 +620,61 @@ class Admin extends CI_Controller {
 		$this->m_service->delete_data($id);
 		
 		redirect('admin/daftar_service/delete/'.$id);
+	}
+
+
+	//menampilkan report keluhan
+	public function report_keluhan()
+	{
+		if($this->input->get('search_keluhan_by_date'))
+		{
+			$periode = $this->input->get('search_keluhan_by_date');
+			$data1 = substr($periode, 0, 10);
+			$data2 = substr($periode, strlen($periode)-10, strlen($periode)-1);
+			$data1 = $data1[6].$data1[7].$data1[8].$data1[9]."/".$data1[0].$data1[1]."/".$data1[3].$data1[4];
+			$data2 = $data2[6].$data2[7].$data2[8].$data2[9]."/".$data2[0].$data2[1]."/".$data2[3].$data2[4];
+			$data = array(
+				'tittle'=> 'report_keluhan',
+				'dummy'	=> $this->m_keluhan->get_keluhan_by_periode($data1, $data2),
+				'content' => 'admin/report_keluhan' 
+			);
+		}
+		else 
+		{
+			$data = array(
+				'tittle'=> 'report_keluhan',
+				'dummy'	=> $this->m_keluhan->get_keluhan(),
+				'content' => 'admin/report_keluhan' 
+			);
+		}
+		$this->load->view('admin/layout/v_wrapper', $data, FALSE);
+	}
+
+	//menampilkan report kritik & saran
+	public function report_kritik_saran()
+	{
+		if($this->input->get('search_kritik_by_date'))
+		{
+			$periode = $this->input->get('search_kritik_by_date');
+			$data1 = substr($periode, 0, 10);
+			$data2 = substr($periode, strlen($periode)-10, strlen($periode)-1);
+			$data1 = $data1[6].$data1[7].$data1[8].$data1[9]."/".$data1[0].$data1[1]."/".$data1[3].$data1[4];
+			$data2 = $data2[6].$data2[7].$data2[8].$data2[9]."/".$data2[0].$data2[1]."/".$data2[3].$data2[4];
+			$data = array(
+				'tittle'=> 'report_kritik_saran',
+				'dummy'	=> $this->m_kritik_saran->get_kritik_saran_by_periode($data1, $data2),
+				'content' => 'admin/report_kritik_saran' 
+			);
+		}
+		else
+		{
+			$data = array(
+				'tittle'=> 'report_kritik_saran',
+				'dummy'	=> $this->m_kritik_saran->get_kritik_saran(),
+				'content' => 'admin/report_kritik_saran' 
+			);
+		}		
+		$this->load->view('admin/layout/v_wrapper', $data, FALSE);
 	}
 
 }
